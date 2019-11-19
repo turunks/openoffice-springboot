@@ -1,0 +1,18 @@
+# Tomcat
+server:
+    tomcat:
+        uri-encoding: UTF-8
+        max-threads: 1000
+        min-spare-threads: 30
+    port: 8077
+    servlet:
+        context-path: /sys        session:          timeout: 7200
+#########################################
+jodconverter:
+  local:
+    enabled: true
+    max-tasks-per-process: 10
+    port-numbers: 8100
+#########################################
+spring:  devtools:    restart:      enabled: true
+########################################
