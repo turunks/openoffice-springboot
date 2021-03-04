@@ -19,6 +19,7 @@ import java.io.InputStream;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
+import com.codepeople.util.WordPdfUtil;
 import org.apache.commons.io.IOUtils;
 import org.jodconverter.DocumentConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,17 +42,24 @@ public class OfficeController {
 
 	@RequestMapping("/office2pdf")
 	public void office2Pdf() {
-		File file = new File("d:/海南省陵水县建设工程智慧工地信息监管服务平台实施方案-new.pptx");
+		String path = "d:/testword/竣工资料（李精-李航湖）170334573.doc";
+		File file = new File(path);
 		try {
-			File newFile = new File("D:/test_pdf");
+			File newFile = new File("D:/testword");
 			if (!newFile.exists()) {
 				newFile.mkdirs();
 			}
 			//文件转换
-			converter.convert(file).to(new File("D:/test_pdf/test.pdf")).execute();
+			// 是doc用aspose.words转pdf,反之openoffice
+			if(path.endsWith("doc")){
+				WordPdfUtil.doc2pdf("d:/testword/竣工资料（李精-李航湖）170334573.doc","d:/testword/竣工资料（李精-李航湖）170334573.pdf");
+			}else {
+				converter.convert(file).to(new File("D:/testword/工作任务单(1)2020121101046.pdf")).execute();
+			}
+//
 			//使用response，将pdf文件以流的方式发送到前端
 			ServletOutputStream outputStream = response.getOutputStream();
-			InputStream in = new FileInputStream(new File("D:/test_pdf/test.pdf"));
+			InputStream in = new FileInputStream(new File("d:/testword/竣工资料（李精-李航湖）170334573.pdf"));
 			int i = IOUtils.copy(in, outputStream);
 			System.out.println(i);
 			in.close();
@@ -59,5 +67,10 @@ public class OfficeController {
 		} catch (Exception e) {
 			throw new RuntimeException("转换失败");
 		} 
+	}
+
+
+	private void doc2pdf(){
+
 	}
 }
